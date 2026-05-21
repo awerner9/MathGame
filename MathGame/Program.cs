@@ -10,57 +10,70 @@
 // :: gives user a clean menu to choose from for selecting a type of game
 
 // TODO
-// add multiplication game
-// add subtraction game
 // add division game (make sure dividends are divisible)
-// add continuity (back to menu after game)
 // figure out how to record games in list and add menu option to view previous games 
 
-static void Menu()
+List<string> results = new List<string>();
+
+static void Menu(List<string> results)
 {
     string? userInput = "";
 
     do
     {
         Console.WriteLine("What operation would you like to use? (choose a number)");
-        Console.WriteLine("1: Addition");
-        Console.WriteLine("2: Subtraction");
-        Console.WriteLine("3: Multiplication");
-        Console.WriteLine("4: Division");
+        Console.WriteLine("1. Addition");
+        Console.WriteLine("2. Subtraction");
+        Console.WriteLine("3. Multiplication");
+        Console.WriteLine("4. Division");
+        Console.WriteLine("5. View Previous Games");
         userInput = Console.ReadLine();
-    } while (userInput != "1" && userInput != "2" && userInput != "3" && userInput != "4");
+    } while (userInput != "1" && userInput != "2" && userInput != "3" && userInput != "4" && userInput != "5");
 
     if (userInput == "1")
     {
-        AdditionGame();
+        AdditionGame(results);
     }
     else if (userInput == "2")
     {
-        SubtractionGame();
+        SubtractionGame(results);
     }
     else if (userInput == "3")
     {
-        MultiplicationGame();
+        MultiplicationGame(results);
     }
     else if (userInput == "4")
     {
-        DivisionGame();
+        DivisionGame(results);
+    } 
+    else if (userInput == "5")
+    {
+        ViewGames(results);    
     }
 }
 
-Menu();
-
-// :: generates 5 addition questions
+Menu(results);
 
 static int generateNumber()
 {
     Random rnd = new Random();
-    int randomNumber = rnd.Next(1, 11);
+    int randomNumber = rnd.Next(1, 101);
 
     return randomNumber;
 }
 
-static void AdditionGame()
+static void ViewGames(List<string> results)
+{
+    foreach(string result in results)
+    {
+        Console.WriteLine(result);
+    }
+    Console.WriteLine("Press enter to return to the menu");
+    Console.ReadLine();
+    Menu(results);
+}
+
+static void AdditionGame(List<string> results)
 {
     Console.Clear();
     
@@ -84,23 +97,108 @@ static void AdditionGame()
         }
     }
 
-    Console.WriteLine($"You got {correctAnswer} out of 5 correct.");
+    Console.WriteLine($"\nYou got {correctAnswer} out of 5 correct.\n");
+    Console.WriteLine("Press enter to return to the menu");
+    Console.ReadLine();
+    results.Add($"Addition Game Result: {correctAnswer}/5");
+    Menu(results);
 }
 
-static void SubtractionGame()
+static void SubtractionGame(List<string> results)
 {
-    int numOne = generateNumber();
-    int numTwo = generateNumber();
+    Console.Clear();
+    
+    int correctAnswer = 0;
+
+    for (int i = 1; i <= 5; i++)
+    {
+        int numOne = generateNumber();
+        int numTwo = generateNumber();
+
+        Console.WriteLine($"{i}. What is {numOne} - {numTwo}?");
+        int? answer = int.Parse(Console.ReadLine()!);
+        if (answer == (numOne - numTwo))
+        {
+            ++correctAnswer;
+            Console.WriteLine("Correct!");
+        } 
+        else
+        {
+            Console.WriteLine("Incorrect!");    
+        }
+    }
+
+    Console.WriteLine($"\nYou got {correctAnswer} out of 5 correct.\n");
+    Console.WriteLine("Press enter to return to the menu");
+    Console.ReadLine();
+    results.Add($"Subtraction Game Result: {correctAnswer}/5");
+    Menu(results);
 }
 
-static void MultiplicationGame()
+static void MultiplicationGame(List<string> results)
 {
-    int numOne = generateNumber();
-    int numTwo = generateNumber();
+    Console.Clear();
+    
+    int correctAnswer = 0;
+
+    for (int i = 1; i <= 5; i++)
+    {
+        int numOne = generateNumber();
+        int numTwo = generateNumber();
+
+        Console.WriteLine($"{i}. What is {numOne} * {numTwo}?");
+        int? answer = int.Parse(Console.ReadLine()!);
+        if (answer == (numOne * numTwo))
+        {
+            ++correctAnswer;
+            Console.WriteLine("Correct!");
+        } 
+        else
+        {
+            Console.WriteLine("Incorrect!");    
+        }
+    }
+
+    Console.WriteLine($"\nYou got {correctAnswer} out of 5 correct.\n");
+    Console.WriteLine("Press enter to return to the menu");
+    Console.ReadLine();
+    results.Add($"Multiplication Game Result: {correctAnswer}/5");
+    Menu(results);
 }
 
-static void DivisionGame()
+static void DivisionGame(List<string> results)
 {
-    int numOne = generateNumber();
-    int numTwo = generateNumber();
+    Console.Clear();
+    
+    int correctAnswer = 0;
+
+    for (int i = 1; i <= 5; i++)
+    {
+        int numOne = 0;
+        int numTwo = 1;
+        do
+        {
+            Random rnd = new Random();
+            numOne = generateNumber();
+            numTwo = generateNumber();
+        } while(numOne % numTwo != 0);
+
+        Console.WriteLine($"{i}. What is {numOne} / {numTwo}?");
+        int? answer = int.Parse(Console.ReadLine()!);
+        if (answer == (numOne / numTwo))
+        {
+            ++correctAnswer;
+            Console.WriteLine("Correct!");
+        } 
+        else
+        {
+            Console.WriteLine("Incorrect!");    
+        }
+    }
+
+    Console.WriteLine($"\nYou got {correctAnswer} out of 5 correct.\n");
+    Console.WriteLine("Press enter to return to the menu");
+    Console.ReadLine();
+    results.Add($"Division Game Result: {correctAnswer}/5");
+    Menu(results);
 }
